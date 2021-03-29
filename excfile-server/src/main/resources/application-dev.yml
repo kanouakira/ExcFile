@@ -1,0 +1,10 @@
+# 网盘初始化的根路径，不存在则创建
+net-disk:
+  root: D://SimpleNetDisk/
+
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password:

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kanouakira.server.mapper.FileMapper">
+    <select id="queryByMD5" resultType="com.kanouakira.common.pojo.UploadFile">
+        SELECT
+            *
+        FROM
+            `file`
+        WHERE
+            file_md5 = #{MD5}
+    </select>
+    <insert id="insertUploadFile" parameterType="com.kanouakira.common.pojo.UploadFile">
+        INSERT INTO `file`(file_md5, file_name, file_status)
+        VALUES (#{uploadFile.file_md5}, #{uploadFile.file_name}, 0)
+    </insert>
+    <update id="updateUploadFile" parameterType="com.kanouakira.common.pojo.UploadFile">
+        UPDATE `file`
+        <set>
+            <if test="uploadFile.file_status != null">
+                file_status = #{uploadFile.file_status},
+            </if>
+            <if test="uploadFile.file_path != null">
+                file_path = #{uploadFile.file_path},
+            </if>
+        </set>
+        WHERE file_md5 = #{uploadFile.file_md5}
+    </update>
+</mapper>

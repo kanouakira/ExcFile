@@ -1,0 +1,20 @@
+# 自定义Netty配置
+CustomNettyConf:
+  host: 127.0.0.1
+  port: 10888
+
+server:
+  port: 9001
+  servlet:
+    context-path: /v1
+
+spring:
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+
+mybatis:
+  mapper-locations: mappers/*

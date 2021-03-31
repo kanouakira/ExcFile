@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="root" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kanouakira.client.javafx.Controller">
+   <children>
+      <AnchorPane minWidth="420.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <children>
+            <Label contentDisplay="RIGHT" text="主机地址:">
+               <graphic>
+                  <TextField fx:id="hostText" prefHeight="25.0" prefWidth="150.0" />
+               </graphic>
+            </Label>
+            <Label contentDisplay="RIGHT" text="端口:" AnchorPane.leftAnchor="240.0">
+               <graphic>
+                  <TextField fx:id="portText" prefHeight="25.0" prefWidth="60.0" />
+               </graphic>
+            </Label>
+            <Button contentDisplay="CENTER" minHeight="25.0" mnemonicParsing="false" onAction="#clickListView" prefHeight="25.0" text="连接" textAlignment="CENTER" AnchorPane.leftAnchor="360.0" />
+            <Label fx:id="chosenFileName" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="40.0">
+               <graphic>
+                  <Button fx:id="chooseFileButton" mnemonicParsing="false" onMouseClicked="#chooseFileButtonClick" text="选择文件" />
+               </graphic></Label>
+            <ListView fx:id="taskList" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="90.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

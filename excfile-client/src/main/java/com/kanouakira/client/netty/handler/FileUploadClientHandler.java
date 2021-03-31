@@ -1,14 +1,15 @@
 package com.kanouakira.client.netty.handler;
 
+import com.kanouakira.client.javafx.TaskCell;
 import com.kanouakira.common.BasicInstruction;
 import com.kanouakira.common.pojo.BlockFile;
 import com.kanouakira.common.pojo.UploadFile;
 import com.kanouakira.common.util.MathUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import javafx.concurrent.Task;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.io.RandomAccessFile;
 
 /**
@@ -20,8 +21,10 @@ public class FileUploadClientHandler extends SimpleChannelInboundHandler<Object>
 
     private static byte[] bytes = new byte[8192 * 1024];
     private UploadFile uploadFile;
+    private TaskCell task;
 
-    public FileUploadClientHandler(UploadFile uploadFile){
+    public FileUploadClientHandler(UploadFile uploadFile, Task task){
+        this.task = (TaskCell) task;
         this.uploadFile = uploadFile;
     }
 
@@ -33,10 +36,22 @@ public class FileUploadClientHandler extends SimpleChannelInboundHandler<Object>
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws IOException {
+    protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof Long){
             Long startIndex = (Long) msg;
+            // 进度相关
             log.info("进度:{}", MathUtil.calPercent(startIndex, uploadFile.getFile().length()));
+            if (task != null){
+                task.refreshProgress(startIndex, uploadFile.getFile().length());
+                while (task.isPause()){
+                    log.debug("任务暂停");
+                    Thread.sleep(1000L);
+                }
+                if (task.isCancelled()) {
+                    log.info("任务取消，关闭通道！");
+                    ctx.close();
+                }
+            }
             RandomAccessFile raf = null;
             int readByte;
             try {

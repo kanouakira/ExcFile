@@ -1,5 +1,7 @@
 package com.kanouakira.client.netty;
 
+import javafx.concurrent.Task;
+
 import java.io.File;
 
 /**
@@ -20,4 +22,12 @@ public interface FileClient {
      * @return
      */
     FileClient setUploadFile(File file) throws Exception;
+
+    /**
+     * 设置上传的任务
+     * @param task 上传的文件
+     * @return
+     */
+    FileClient setTask(Task task) throws Exception;
+
 }

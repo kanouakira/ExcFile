@@ -7,6 +7,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import javafx.concurrent.Task;
 
 import java.io.File;
 
@@ -19,6 +20,7 @@ public class NettyFileClient implements FileClient {
     private int port;
     private String host;
     private UploadFile uploadFile;
+    private Task task;
 
     public NettyFileClient(String host, int port){
         this.host = host;
@@ -32,7 +34,7 @@ public class NettyFileClient implements FileClient {
         b.group(workerGroup)
                 .channel(NioSocketChannel.class) // 代替NioServerSocketChannel，NioSocketChannel被用来创建客户端通道。
                 .option(ChannelOption.SO_KEEPALIVE, true)
-                .handler(new NettyClientInitializer().setUploadFile(uploadFile));
+                .handler(new NettyClientInitializer().setUploadFile(uploadFile).setTask(task));
         ChannelFuture f = b.connect(host, port).sync(); // 客户端使用connect 代替 bind
         f.channel().closeFuture().sync();
         f.channel().close();
@@ -44,4 +46,11 @@ public class NettyFileClient implements FileClient {
         this.uploadFile = UploadFile.getInstance(file);
         return this;
     }
+
+    @Override
+    public FileClient setTask(Task task){
+        this.task = task;
+        return this;
+    }
+
 }

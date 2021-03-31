@@ -9,6 +9,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
+import javafx.concurrent.Task;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
@@ -22,13 +23,15 @@ public class NettyClientInitializer extends ChannelInitializer<SocketChannel> {
 
     // 上传需要上传的文件
     private UploadFile uploadFile;
+    // 记录任务,用于获取任务状态设置任务进度
+    private Task task;
 
     @Override
-    protected void initChannel(SocketChannel channel) throws Exception {
+    protected void initChannel(SocketChannel channel) {
         ChannelPipeline pipeline = channel.pipeline();
         pipeline.addLast("encoder", new ObjectEncoder());
         pipeline.addLast("decoder", new ObjectDecoder(Integer.MAX_VALUE, ClassResolvers.cacheDisabled(null)));
         pipeline.addLast("TransferredCheck", new TransferredClientHandler());
-        pipeline.addLast("UploadHandler", new FileUploadClientHandler(uploadFile));
+        pipeline.addLast("UploadHandler", new FileUploadClientHandler(uploadFile, task));
     }
 }

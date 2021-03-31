@@ -20,7 +20,8 @@ ExcFile是个基于Netty实现的简单文件传输系统，目前此系统包�
 1. 修改并运行/excfile-client/src/main/java/com/kanouakira/client/netty/NettyClient.java
 
 ### To Do List
-- [ ] excfile-client:Swing界面
+- [ ] ~~excfile-client:Swing界面~~
+- [x] 2021-03-31 excfile-client:JavaFx界面
 - [ ] excfile-client:下载
 - [ ] excfile-server:web端上传/下载
 
